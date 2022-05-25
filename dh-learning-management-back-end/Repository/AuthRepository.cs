@@ -14,10 +14,7 @@ public class AuthRepository
 {
     private readonly string _connectionString;
 
-    public AuthRepository()
-    {
-        _connectionString = "Host=localhost;Port=5432;Username=postgres;Password=1234;Database=L&D";
-    }
+    public AuthRepository() => _connectionString = "Host=localhost;Port=5432;Username=postgres;Password=1234;Database=L&D";
 
     private IDbConnection Connection => new NpgsqlConnection(_connectionString);
 
@@ -39,7 +36,7 @@ public class AuthRepository
             return new AuthResponseDto
             {
                 IsSuccess = true,
-                Message = "Account Created Successfull"
+                Message = "Account Created Successfully"
             };
         }
 
