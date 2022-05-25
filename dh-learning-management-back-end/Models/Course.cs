@@ -10,4 +10,5 @@ public class Course
     public int Seatsavailable { get; set; }
     [DataType(DataType.Date)] public DateTime Coursestartdate { get; set; }
     [DataType(DataType.Date)] public DateTime Courseenddate { get; set; }
+    public string Courseimgurl { get; set; } = string.Empty;
 }

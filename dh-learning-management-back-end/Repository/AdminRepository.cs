@@ -18,7 +18,7 @@ public class AdminRepository
     {
         using var dbConnection = Connection;
         const string sQuery =
-            @"INSERT INTO courses(coursename, courseduration, seatsavailable, coursestartdate, courseenddate) VALUES (@coursename, @courseduration, @seatsavailable, @coursestartdate, @courseenddate);";
+            @"INSERT INTO courses(coursename, courseduration, seatsavailable, coursestartdate, courseenddate, courseimgurl) VALUES (@coursename, @courseduration, @seatsavailable, @coursestartdate, @courseenddate, @courseimgurl);";
         dbConnection.Open();
         try
         {
@@ -35,7 +35,7 @@ public class AdminRepository
     {
         using var dbConnection = Connection;
         const string sQuery =
-            @"UPDATE courses SET coursename=@coursename, courseduration=@courseduration, seatsavailable=@seatsavailable, coursestartdate=@coursestartdate, courseenddate=@courseenddate WHERE courseid=@courseid;";
+            @"UPDATE courses SET coursename=@coursename, courseduration=@courseduration, seatsavailable=@seatsavailable, coursestartdate=@coursestartdate, courseenddate=@courseenddate, courseimgurl=@courseimgurl WHERE courseid=@courseid;";
         dbConnection.Open();
         try
         {
