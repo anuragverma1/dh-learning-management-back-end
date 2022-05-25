@@ -115,4 +115,13 @@ public class AdminRepository
         dbConnection.Open();
         return dbConnection.QuerySingle<int>(sQuery, new { Courseid = courseid }) > 0;
     }
+
+    public IEnumerable<AdminReportDto> Report(string username)
+    {
+        using var dbConnection = Connection;
+        const string sQuery =
+            @"select courses.coursename , assigned.status from courses inner join assigned on courses.courseid = assigned.courseassigned where assigned.username = @username;";
+        dbConnection.Open();
+        return dbConnection.Query<AdminReportDto>(sQuery, new { Username = username });
+    }
 }

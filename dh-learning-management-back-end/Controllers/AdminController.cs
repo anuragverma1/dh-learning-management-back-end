@@ -56,5 +56,12 @@ namespace dh_learning_management_back_end.Controllers
 
             return BadRequest(response.Message);
         }
+
+        [HttpGet("report/{username}")]
+        [Authorize]
+        public ActionResult<IEnumerable<AdminReportDto>> GetReport(string username)
+        {
+            return Ok(_adminRepository.Report(username));
+        }
     }
 }

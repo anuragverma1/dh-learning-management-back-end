@@ -2,6 +2,6 @@
 
 public class AssignCourseResponseDto
 {
-    public string Message { get; set; }
+    public string Message { get; set; } = string.Empty;
     public bool Issuccess { get; set; }
 }
