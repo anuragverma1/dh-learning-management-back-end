@@ -48,14 +48,14 @@ public class AdminRepository
         }
     }
 
-    public bool DeleteCourse(Guid request)
+    public bool DeleteCourse(Guid courseid)
     {
         using var dbConnection = Connection;
         const string sQuery = @"DELETE FROM courses WHERE courseid=@courseid;";
         dbConnection.Open();
         try
         {
-            dbConnection.Execute(sQuery, new { Courseid = request });
+            dbConnection.Execute(sQuery, new { Courseid = courseid });
             return true;
         }
         catch
@@ -68,6 +68,51 @@ public class AdminRepository
     {
         using var dbConnection = Connection;
         const string sQuery = @"Select * from Courses";
+        dbConnection.Open();
         return dbConnection.Query<Course>(sQuery);
+    }
+
+    public AssignCourseResponseDto Assign(AssignCourseDto request)
+    {
+        if (SeatsAvailable(request.Courseassigned))
+        {
+            using var dbConnection = Connection;
+            const string sQuery =
+                @"INSERT INTO assigned( username, courseassigned) VALUES (@username, @courseassigned);";
+            dbConnection.Open();
+            try
+            {
+                dbConnection.Execute(sQuery, request);
+                return new AssignCourseResponseDto
+                {
+                    Message = "Assigned Successfully",
+                    Issuccess = true
+                };
+            }
+            catch
+            {
+                return new AssignCourseResponseDto
+                {
+                    Message = "Error while Assigning,try again later",
+                    Issuccess = false
+                };
+            }
+        }
+        else
+        {
+            return new AssignCourseResponseDto
+            {
+                Message = "Seats Not Available",
+                Issuccess = false
+            };
+        }
+    }
+
+    private bool SeatsAvailable(Guid courseid)
+    {
+        using var dbConnection = Connection;
+        const string sQuery = @"Select seatsavailable from Courses where courseid=@courseid";
+        dbConnection.Open();
+        return dbConnection.QuerySingle<int>(sQuery, new { Courseid = courseid }) > 0;
     }
 }

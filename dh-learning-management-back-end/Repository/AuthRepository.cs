@@ -14,7 +14,8 @@ public class AuthRepository
 {
     private readonly string _connectionString;
 
-    public AuthRepository() => _connectionString = "Host=localhost;Port=5432;Username=postgres;Password=1234;Database=L&D";
+    public AuthRepository() =>
+        _connectionString = "Host=localhost;Port=5432;Username=postgres;Password=1234;Database=L&D";
 
     private IDbConnection Connection => new NpgsqlConnection(_connectionString);
 
@@ -140,5 +141,12 @@ public class AuthRepository
         var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
         return jwt;
+    }
+
+    public IEnumerable<User> GetUsers()
+    {
+        using var dbConnection = Connection;
+        const string sQuery = @"Select * from Users";
+        return dbConnection.Query<User>(sQuery);
     }
 }

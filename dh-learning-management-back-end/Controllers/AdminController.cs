@@ -45,6 +45,16 @@ namespace dh_learning_management_back_end.Controllers
         {
             return Ok(_adminRepository.GetCourses());
         }
-        
+
+        [HttpPost("assign")]
+        [Authorize]
+        public ActionResult<AssignCourseResponseDto> AssignCourse(AssignCourseDto request)
+        {
+            var response = _adminRepository.Assign(request);
+            if (response.Issuccess)
+                return Ok(response);
+
+            return BadRequest(response.Message);
+        }
     }
 }
