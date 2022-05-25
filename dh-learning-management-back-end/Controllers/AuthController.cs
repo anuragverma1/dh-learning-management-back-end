@@ -30,7 +30,7 @@ namespace dh_learning_management_back_end.Controllers
         {
             var response = _authRepository.Login(request);
             if (response.IsSuccess)
-                return Ok(response.Message);
+                return Ok(response);
 
             return BadRequest(response.Message);
         }
