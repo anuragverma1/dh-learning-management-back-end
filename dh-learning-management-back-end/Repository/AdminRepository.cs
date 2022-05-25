@@ -14,7 +14,7 @@ public class AdminRepository
 
     private IDbConnection Connection => new NpgsqlConnection(_connectionString);
 
-    public bool CreateCourse(Course request)
+    public bool CreateCourse(CourseDto request)
     {
         using var dbConnection = Connection;
         const string sQuery =
@@ -51,7 +51,7 @@ public class AdminRepository
     public bool DeleteCourse(Guid request)
     {
         using var dbConnection = Connection;
-        const string sQuery = @"";
+        const string sQuery = @"DELETE FROM courses WHERE courseid=@courseid;";
         dbConnection.Open();
         try
         {
@@ -62,5 +62,12 @@ public class AdminRepository
         {
             return false;
         }
+    }
+
+    public IEnumerable<Course> GetCourses()
+    {
+        using var dbConnection = Connection;
+        const string sQuery = @"Select * from Courses";
+        return dbConnection.Query<Course>(sQuery);
     }
 }

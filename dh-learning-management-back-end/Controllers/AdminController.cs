@@ -13,7 +13,7 @@ namespace dh_learning_management_back_end.Controllers
         public AdminController() => _adminRepository = new AdminRepository();
 
         [HttpPost("add")]
-        public ActionResult<string> AddCourse(Course request)
+        public ActionResult<string> AddCourse(CourseDto request)
         {
             return Ok(_adminRepository.CreateCourse(request)
                 ? "Created Successfully"
@@ -34,6 +34,12 @@ namespace dh_learning_management_back_end.Controllers
             return Ok(_adminRepository.DeleteCourse(request)
                 ? "Deleted Successfully"
                 : "Error while Deleting.Plz try again.");
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<Course>> GetAllCourses()
+        {
+            return Ok(_adminRepository.GetCourses());
         }
     }
 }
