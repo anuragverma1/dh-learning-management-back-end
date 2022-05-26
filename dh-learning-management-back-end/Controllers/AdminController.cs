@@ -40,7 +40,7 @@ namespace dh_learning_management_back_end.Controllers
                 : "Error while Deleting.Plz try again.");
         }
 
-        [HttpGet]
+        [HttpGet("courses")]
         public ActionResult<IEnumerable<Course>> GetAllCourses()
         {
             return Ok(_adminRepository.GetCourses());
