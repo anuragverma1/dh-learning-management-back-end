@@ -14,7 +14,7 @@ namespace dh_learning_management_back_end.Controllers
         public AdminController() => _adminRepository = new AdminRepository();
 
         [HttpPost("add")]
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public ActionResult<string> AddCourse(CourseDto request)
         {
             return Ok(_adminRepository.CreateCourse(request)
@@ -23,7 +23,7 @@ namespace dh_learning_management_back_end.Controllers
         }
 
         [HttpPost("edit")]
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public ActionResult<string> EditCourse(Course request)
         {
             return Ok(_adminRepository.EditCourse(request)
@@ -32,7 +32,7 @@ namespace dh_learning_management_back_end.Controllers
         }
 
         [HttpDelete("delete")]
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public ActionResult<string> DeleteCourse(Guid request)
         {
             return Ok(_adminRepository.DeleteCourse(request)
@@ -47,7 +47,7 @@ namespace dh_learning_management_back_end.Controllers
         }
 
         [HttpPost("assign")]
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public ActionResult<AssignCourseResponseDto> AssignCourse(AssignCourseDto request)
         {
             var response = _adminRepository.Assign(request);
@@ -58,7 +58,7 @@ namespace dh_learning_management_back_end.Controllers
         }
 
         [HttpGet("report/{username}")]
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public ActionResult<IEnumerable<AdminReportDto>> GetReport(string username)
         {
             return Ok(_adminRepository.Report(username));
