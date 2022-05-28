@@ -15,11 +15,11 @@ public class AuthRepository
     private readonly string _connectionString;
 
     public AuthRepository() =>
-        _connectionString = "Host=localhost;Port=5432;Username=postgres;Password=1234;Database=L&D";
+        _connectionString = "Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=L&D";
 
     private IDbConnection Connection => new NpgsqlConnection(_connectionString);
 
-    public AuthResponseDto RegisterUser(UserRegisterDto request)
+    public UserInfoDto RegisterUser(UserRegisterDto request)
     {
         CreatePasswordHash(request.Password, out var passwordHash, out var passwordSalt);
 
@@ -29,19 +29,29 @@ public class AuthRepository
             PasswordHash = passwordHash,
             PasswordSalt = passwordSalt,
             Firstname = request.Firstname,
-            Lastname = request.Lastname
+            Lastname = request.Lastname,
+            Email = request.Email,
+            Mobileno = request.Mobileno,
+            Manager = request.Manager,
+            Profileimg = request.Profileimg
         };
 
         if (AddUser(user))
         {
-            return new AuthResponseDto
+            return new UserInfoDto
             {
                 IsSuccess = true,
-                Message = "Account Created Successfully"
+                Username = request.Username,
+                Firstname = request.Firstname,
+                Lastname = request.Lastname,
+                Email = request.Email,
+                Mobileno = request.Mobileno,
+                Manager = request.Manager,
+                Profileimg = request.Profileimg
             };
         }
 
-        return new AuthResponseDto
+        return new UserInfoDto
         {
             IsSuccess = false,
             Message = "Account Already Exists"
@@ -143,10 +153,10 @@ public class AuthRepository
         return jwt;
     }
 
-    public IEnumerable<User> GetUsers()
+    public IEnumerable<UserInfoDto> GetUsers()
     {
         using var dbConnection = Connection;
         const string sQuery = @"Select * from Users";
-        return dbConnection.Query<User>(sQuery);
+        return dbConnection.Query<UserInfoDto>(sQuery);
     }
 }

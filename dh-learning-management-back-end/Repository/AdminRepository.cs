@@ -10,7 +10,7 @@ public class AdminRepository
     private readonly string _connectionString;
 
     public AdminRepository() =>
-        _connectionString = "Host=localhost;Port=5432;Username=postgres;Password=1234;Database=L&D";
+        _connectionString = "Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=L&D";
 
     private IDbConnection Connection => new NpgsqlConnection(_connectionString);
 
@@ -120,7 +120,7 @@ public class AdminRepository
     {
         using var dbConnection = Connection;
         const string sQuery =
-            @"select courses.coursename , assigned.status from courses inner join assigned on courses.courseid = assigned.courseassigned where assigned.username = @username;";
+            @"select courses.coursename , courses.courseduration, courses.seatsavailable, courses.courseimgurl, assigned.status from courses inner join assigned on courses.courseid = assigned.courseassigned where assigned.username = @username;";
         dbConnection.Open();
         return dbConnection.Query<AdminReportDto>(sQuery, new { Username = username });
     }

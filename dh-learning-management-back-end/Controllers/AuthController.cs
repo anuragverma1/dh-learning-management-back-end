@@ -36,7 +36,7 @@ namespace dh_learning_management_back_end.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<User>> GetAllUser()
+        public ActionResult<IEnumerable<UserInfoDto>> GetAllUser()
         {
             return Ok(_authRepository.GetUsers());
         }
