@@ -35,10 +35,10 @@ namespace dh_learning_management_back_end.Controllers
             return BadRequest(response.Message);
         }
 
-        [HttpGet]
-        public ActionResult<IEnumerable<UserInfoDto>> GetAllUser()
+        [HttpGet("userinfo")]
+        public ActionResult<IEnumerable<UserInfoDto>> GetAllUser(string username)
         {
-            return Ok(_authRepository.GetUsers());
+            return Ok(_authRepository.GetUsers(username));
         }
     }
 }

@@ -58,26 +58,31 @@ public class AuthRepository
         };
     }
 
-    public AuthResponseDto Login(UserLoginDto request)
+    public UserInfoDto Login(UserLoginDto request)
     {
         var user = FindUser(request.Username);
         if (user == null)
         {
-            return new AuthResponseDto { Message = "User Not Found" };
+            return new UserInfoDto { IsSuccess = false, Message="No user exists" };
         }
 
         if (!VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
         {
-            return new AuthResponseDto() { Message = "Wrong Password" };
+           return  new UserInfoDto { IsSuccess = false, Message = "Wrong Password" };
         }
 
         var token = CreateToken(user);
 
-        return new AuthResponseDto
+        return new UserInfoDto
         {
             IsSuccess = true,
-            Token = token,
-            Message = "Login Successfull"
+            Username = user.Username,
+            Firstname = user.Firstname,
+            Lastname = user.Lastname,
+            Email = user.Email,
+            Mobileno = user.Mobileno,
+            Manager = user.Manager,
+            Profileimg = user.Profileimg
         };
     }
 
@@ -153,10 +158,10 @@ public class AuthRepository
         return jwt;
     }
 
-    public IEnumerable<UserInfoDto> GetUsers()
+    public IEnumerable<UserInfoDto> GetUsers(string username)
     {
         using var dbConnection = Connection;
-        const string sQuery = @"Select * from Users";
-        return dbConnection.Query<UserInfoDto>(sQuery);
+        const string sQuery = @"Select * from Users where username=@Username";
+        return dbConnection.Query<UserInfoDto>(sQuery, new { Username = username });
     }
 }

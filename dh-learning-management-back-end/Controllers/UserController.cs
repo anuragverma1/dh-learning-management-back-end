@@ -10,30 +10,41 @@ namespace dh_learning_management_back_end.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserRepository _userRepository;
-        private readonly AdminRepository _adminRepository;
 
         public UserController()
         {
             _userRepository = new UserRepository();
-            _adminRepository = new AdminRepository();
         }
 
-        [HttpPost("{username}")]
+        [HttpGet("{username}")]
         public ActionResult<UserCoursesStatusDto> GetCoursesStatus(string username)
         {
             return Ok(_userRepository.GetStatus(username));
         }
 
-        [HttpPost("courses/{coursename}")]
+        [HttpGet("courses/{coursename}")]
         public ActionResult<Course> GetCourses(string coursename)
         {
             return Ok(_userRepository.GetCourseInfo(coursename));
         }
 
-        [HttpPost("courses/{username}")]
-        public ActionResult<IEnumerable<AdminReportDto>> GetUserCourses(string username)
+        [HttpGet("coursesinfo")]
+        public ActionResult<IEnumerable<AdminReportDto>> GetUserCourses(string username, string status)
         {
-            return Ok(_adminRepository.Report(username));
+            return Ok(_userRepository.Report(username, status));
+        }
+
+        [HttpPost("markcomplete")]
+        public ActionResult MarkComplete(UserMarkDto request)
+        {
+            _userRepository.ChangeStatus(request);
+            return Ok();
+        }
+
+        [HttpGet("mycourses")]
+        public ActionResult<IEnumerable<Course>> GetMyCourses(string username)
+        {
+            return Ok(_userRepository.GetCourses(username));
         }
     }
 }
